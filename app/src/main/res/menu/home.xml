@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_filter"
+        android:title="Advanced search"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_lowPrice"
+        android:title="Order by Price"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_highDiscount"
+        android:title="Order by Discount"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_search"
+        android:orderInCategory="100"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:icon="@drawable/ic_search"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+
+</menu>

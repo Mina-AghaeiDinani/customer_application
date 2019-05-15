@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#131312</color>
+    <color name="colorPrimaryDark">#C96c56</color>
+    <color name="colorPrimaryLight">#EE8080</color>
+    <color name="colorIcons">#FFFFFF</color>
+    <color name="colorSecondary">#5B852F</color>
+    <color name="colorSecondaryDark">#5B852F</color>
+    <color name="colorSecondaryLight">#ffa270</color>
+    <color name="colorToolbar">#FF3D3737</color>
+    <color name="grayLight">#fafafa</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="button">#A235E5</color>
+    <color name="colorCustomer">#C96c56</color>
+    <color name="colorCustomerTransparent">#BAC96C56</color>
+    <color name="lightGrayTransparent">#80F1EFEF</color>
+    <color name="darkGray">#979292</color>
+    <color name="darkGrayTransparent">#80413D3D</color>
+    <color name="lightGray">#F8F1EFEF</color>
+    <color name="overlayBackground">#7F535657</color>
+    <color name="overlayActionBar">#0e0d0e</color>
+</resources>

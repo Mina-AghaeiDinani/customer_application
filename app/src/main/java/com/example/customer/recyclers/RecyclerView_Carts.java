@@ -38,6 +38,8 @@ public class RecyclerView_Carts {
         private TextView mCart;
         private String key;
         private String restaurantId;
+        private TextView mTotalPrice;
+        private TextView mTotalItems;
 
 
         public CartsItemView(ViewGroup parent) {
@@ -47,8 +49,8 @@ public class RecyclerView_Carts {
             mComment = itemView.findViewById(R.id.tvRestaurantComment);
             mCart = itemView.findViewById(R.id.tvCart);
             mImage = itemView.findViewById(R.id.imgRestaurant);
-
-
+            mTotalPrice = itemView.findViewById(R.id.tvTotalPrc);
+            mTotalItems = itemView.findViewById(R.id.tvTotalItems);
             //Item set click on it for open list
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,6 +69,8 @@ public class RecyclerView_Carts {
             mName.setText(cartInfo.getRestaurantName());
             mComment.setText(cartInfo.getRestaurantComment());
             restaurantId=cartInfo.getRestaurantId();
+            mTotalPrice.setText(cartInfo.getTotalPrice()+" €");
+            mTotalItems.setText(cartInfo.getTotalItems());
             this.key = key;
             Picasso.get()
                     .load(cartInfo.getRestaurantImage())
@@ -96,6 +100,8 @@ public class RecyclerView_Carts {
         public void onBindViewHolder(CartsItemView holder, int position) {
             holder.bind(mCartList.get(position), mKeys.get(position));
         }
+
+        //........
 
         @Override
         public int getItemCount() {

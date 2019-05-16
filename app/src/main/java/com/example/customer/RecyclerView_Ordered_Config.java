@@ -88,8 +88,10 @@ public class RecyclerView_Ordered_Config {
             holder.bind(mOrderdFoodList .get(position),mKeys.get(position));
         }
 
+
         @Override
         public int getItemCount() {
+
             return mOrderdFoodList .size();
         }
     }

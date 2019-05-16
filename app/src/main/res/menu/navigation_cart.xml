@@ -2,14 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/cartInfo"
-        android:icon="@drawable/ic_cart"
-        android:title="Shopping cart" />
-
-    <item
         android:id="@+id/menu"
         android:icon="@drawable/ic_restaurant"
         android:title="Menu" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_person"
+        android:title="My profile" />
+
     <item
         android:id="@+id/sign_out"
         android:icon="@drawable/ic_exit"

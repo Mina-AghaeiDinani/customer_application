@@ -1,6 +1,7 @@
 package com.example.customer;
 
 import android.content.Intent;
+import android.net.sip.SipSession;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +37,13 @@ public class UserCartActivity extends AppCompatActivity {
     private DatabaseReference mReferenceInfo;
     private DatabaseReference mRefOrderFoods;
     private DatabaseReference mRefOrderInfo;
+    private static Boolean flagDelete=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_cart);
+
         //get Ids from previous activity
         key = getIntent().getStringExtra("key");
         restaurantId = getIntent().getStringExtra("restaurantId");
@@ -84,8 +87,23 @@ public class UserCartActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            //Submit foods
+                mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()){
+                            OrderdFood orderdFood=keyNode.getValue(OrderdFood.class);
+                            mRefOrderFoods.child(OrderId).child(keyNode.getKey()).setValue(orderdFood);
+                        }
+                    }
 
-            mReferenceFoods.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // ...
+                    }
+                });
+                //........................
+            /*mReferenceFoods.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot keyNode : dataSnapshot.getChildren()){
@@ -98,8 +116,23 @@ public class UserCartActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
-            mReferenceInfo.addValueEventListener(new ValueEventListener() {
+            });*/
+            //submit Info
+                mReferenceInfo.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        CartInfo cartInfo = dataSnapshot.getValue(CartInfo.class);
+                        mRefOrderInfo.child(OrderId).setValue(cartInfo);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // ...
+                    }
+                });
+                //...................
+
+           /* mReferenceInfo.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     CartInfo cartInfo = dataSnapshot.getValue(CartInfo.class);
@@ -110,7 +143,15 @@ public class UserCartActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            });*/
+
+            //Delete Cart
+                flagDelete=true;
+                Toast.makeText(UserCartActivity.this, "Cart has been submitted successfully", Toast.LENGTH_LONG).show();
+
+                Intent intent=new Intent(UserCartActivity.this,UserCartsActivity.class);
+                startActivity(intent);
+                finish();
 
             }
         });
@@ -119,13 +160,24 @@ public class UserCartActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(UserCartActivity.this, "Cart has been removed", Toast.LENGTH_LONG).show();
-               // mReferenceFoods.setValue(null);
-              //  mReferenceInfo.setValue(null);
+                flagDelete=true;
+                Toast.makeText(UserCartActivity.this, "Cart has been removed successfully", Toast.LENGTH_LONG).show();
+
+                Intent intent=new Intent(UserCartActivity.this,UserCartsActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (flagDelete){
+            mReferenceFoods.setValue(null);
+           mReferenceInfo.setValue(null);
+        }
+    }
 
-
-}
+    }

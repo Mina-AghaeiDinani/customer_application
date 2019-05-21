@@ -35,13 +35,12 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(new Intent(ProfileActivity.this,LoginActivity.class));
                     return true;
                 case R.id.cartInfo:
-                    startActivity(new Intent(ProfileActivity.this,UserCartsActivity.class));
-                    finish();
+                    startActivity(new Intent(ProfileActivity.this,UserCartActivity.class));
+
                     return true;
                 case R.id.menu:
                     Intent  intent = new Intent(ProfileActivity.this, Home.class);
                     startActivity(intent);
-                    finish();
                     return true;
             }
             return false;

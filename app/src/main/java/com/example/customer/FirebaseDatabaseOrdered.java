@@ -24,7 +24,6 @@ public class FirebaseDatabaseOrdered {
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
-
     }
 
 
@@ -32,28 +31,25 @@ public class FirebaseDatabaseOrdered {
 
 
     public  void readFoods (final DataStatus dataStatus,final DatabaseReference mReferenceFoods){
-        mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
+        mReferenceFoods.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 orderdFoods.clear();
-
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()){
                     keys.add(keyNode.getKey());
                     OrderdFood orderdFood=keyNode.getValue(OrderdFood.class);
 
-                    orderdFoods.add(orderdFood);
+                   orderdFoods.add(orderdFood);
                 }
 
                 dataStatus.DataIsLoaded(orderdFoods,keys);
-            }
-
+                }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // ...
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-
 
     }
 

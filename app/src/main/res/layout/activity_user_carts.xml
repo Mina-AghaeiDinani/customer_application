@@ -21,30 +21,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/nav_Carts"
+        app:layout_constraintBottom_toTopOf="@+id/tvTotalCarts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/nav_Carts"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvTotalCarts"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorCustomer"
-        android:gravity="bottom"
+        android:layout_marginBottom="10dp"
 
+        android:fontFamily="serif"
+        android:text="Your cart is empty"
+        android:hint="Your cart is empty"
+        android:textColor="@color/colorBlack"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-
-        android:fitsSystemWindows="true"
-        app:itemBackground="@drawable/drawer_selected_item"
-        app:itemIconTint="@drawable/drawer_item"
-        app:itemTextColor="@drawable/drawer_item"
-        app:menu="@menu/navigation_cart" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

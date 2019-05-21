@@ -47,38 +47,17 @@
             android:text="Iranian food"
             android:textColor="@color/colorBlack"
             android:textSize="15sp" />
-        <TextView
-            android:id="@+id/tvTotalItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRestaurantComment"
-            android:layout_toLeftOf="@+id/tvCart"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="3dp"
-            android:textColor="@color/colorBlack"
-            android:text="12"
-           />
+
         <TextView
             android:id="@+id/tvCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvRestaurantComment"
-            android:layout_toLeftOf="@+id/tvTotalPrc"
-            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
             android:layout_marginEnd="10dp"
             android:drawableEnd="@drawable/ic_cart_green"
-           />
-        <TextView
-            android:id="@+id/tvTotalPrc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRestaurantComment"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/colorBlack"
-
-            android:text="140.5 $" />
+            android:padding="5dp" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

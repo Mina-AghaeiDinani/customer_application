@@ -24,17 +24,23 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firestore.v1.StructuredQuery;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoodDetailsActivity extends AppCompatActivity {
     private int i;
-    private Integer Total;
-    private Integer TotalItems;
+    private static Double Total;
+    private static Integer TotalItems;
     //
     private String key; //Key of food
     private String foodId;
-    private String restaurantId; //Uid of restaurant
+    private static  String restaurantId; //Uid of restaurant
     private String restaurantName;
     private String restaurantImage;
     private String restaurantComment;
@@ -55,11 +61,12 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
     private TextView tvCounter;
     private int Counter;
-    private int IntPrice;
+    private Double IntPrice;
     private Button btnAdd;
     private ImageButton btnDecrease;
     private TextView NameofFood, PriceOfFood, DiscountOfFood, DescriptionOfFood, CommentOfFood;
     private ImageView imgFoodDetails;
+    private static Boolean flag=false;
 
 
     @Override
@@ -137,7 +144,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 } else {
                     //register ordered food
                     Counter = Integer.valueOf(tvCounter.getText().toString().trim());
-                    Integer totalPrice = Counter * IntPrice;
+                    final Double totalPrice = Counter * IntPrice;
                     OrderdFood orderedFood = new OrderdFood();
                     orderedFood.setFoodName(foodName);
                     orderedFood.setFoodPrice(foodPrice);
@@ -147,7 +154,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                     orderedFood.setNumber(tvCounter.getText().toString().trim());
                     databaseCartFood.child(restaurantId).child("Foods").child(foodId).setValue(orderedFood);
 
-                    CartInfo cartInfo = new CartInfo();
+                    final CartInfo cartInfo = new CartInfo();
                     cartInfo.setStatus("pending");
                     cartInfo.setCustomerId(customerId);
                     cartInfo.setCustomerName(customerName);
@@ -158,61 +165,65 @@ public class FoodDetailsActivity extends AppCompatActivity {
                     cartInfo.setRestaurantComment(restaurantComment);
                     databaseCartInfo.child(restaurantId).setValue(cartInfo);
 
-                    //Compute and Show total Price
-                    Total = 0;
-                    TotalItems = 0;
-
-                    databaseCartFood.child(restaurantId).child("Foods").addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            /*  for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
-                                OrderdFood orderdFood = keyNode.getValue(OrderdFood.class);
-
-                                Integer IntTotalPrice = Integer.valueOf(orderdFood.getTotalPrice());
-                                Integer IntTotalItems = Integer.valueOf(orderdFood.getNumber());
-                                TotalItems = TotalItems + IntTotalItems;
-                                Total = Total + IntTotalPrice;
-                            }
-                            Toast.makeText(FoodDetailsActivity.this, TotalItems, Toast.LENGTH_LONG).show();
-
-
-                            databaseCartInfo.child(restaurantId)
-                                    .child("totalPrice").setValue(Total.toString());
-                            databaseCartInfo.child(restaurantId)
-                                    .child("totalItems").setValue(TotalItems.toString());*/
-                        }
-
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                    //...............................
-
+                    flag=true;
                     Toast.makeText(FoodDetailsActivity.this, "Food is added to your cart", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(FoodDetailsActivity.this, Home.class);
                     startActivity(intent);
-                    // finish();
+                    finish();
 
                 }
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Compute and Show total Price
+        Total = 0.0;
+        TotalItems = 0;
+        if (flag)
+        {
+            databaseCartFood.child(restaurantId).child("Foods").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()){
+                        OrderdFood orderdFood =keyNode.getValue(OrderdFood.class);
+                        TotalItems=TotalItems+Integer.valueOf(orderdFood.getNumber());
+                        Total=Total+Double.valueOf(orderdFood.getTotalPrice());
+                    }
+                    databaseCartInfo.child(restaurantId).child("totalItems").getKey();
+                    databaseCartInfo.child(restaurantId).child("totalItems").setValue(TotalItems.toString());
+                    databaseCartInfo.child(restaurantId).child("totalPrice").setValue(Total.toString());
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // ...
+                }
+            });
+           /* databaseCartFood.child(restaurantId).child("Foods").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     for (DataSnapshot keyNode : dataSnapshot.getChildren()){
+                        OrderdFood orderdFood =keyNode.getValue(OrderdFood.class);
+                        TotalItems=TotalItems+Integer.valueOf(orderdFood.getNumber());
+                        Total=Total+Double.valueOf(orderdFood.getTotalPrice());
+                    }
+                    databaseCartInfo.child(restaurantId).child("totalItems").getKey();
+                    databaseCartInfo.child(restaurantId).child("totalItems").setValue(TotalItems.toString());
+                    databaseCartInfo.child(restaurantId).child("totalPrice").setValue(Total.toString());
+                   // Toast.makeText(FoodDetailsActivity.this, "It works"+TotalItems+Total, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });*/
+           // databaseCartFood.child(restaurantId).child("Foods").removeEventListener();
+        }
+
     }
 
     //********** what toolbar is doing
@@ -264,7 +275,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 restaurantId = dailyOffer.getRestaurantUid();
                 foodPrice = dailyOffer.getPrice();
                 //Convert foodPrice to Integer
-                IntPrice = Integer.valueOf(dailyOffer.getPrice());
+                IntPrice = Double.valueOf(dailyOffer.getPrice());
                 foodName = dailyOffer.getName();
                 Picasso.get()
                         .load(dailyOffer.getImageUrl())
@@ -315,6 +326,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }

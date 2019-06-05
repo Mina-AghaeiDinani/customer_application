@@ -41,14 +41,14 @@ public class FirebaseDatabaseFilter {
                 DailyFoods.clear();
                 List<String> keys = new ArrayList<>();
 
-                Integer IntPrice;
+                Double IntPrice;
                 Integer IntDiscount;
 
 
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     DailyOffer dailyOffer = keyNode.getValue(DailyOffer.class);
-                    IntPrice = Integer.valueOf(dailyOffer.getPrice());
+                    IntPrice = Double.valueOf(dailyOffer.getPrice());
                     IntDiscount = Integer.valueOf(dailyOffer.getDiscount());
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.customer">
 
     <uses-feature
@@ -25,8 +26,10 @@
         android:label="Easy Eat"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ShowFiltersActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".RestaurantNavigationActivity"></activity>
+        <activity android:name=".ShowFiltersActivity" />
         <activity android:name=".UserCartsActivity" />
         <activity android:name=".UserCartActivity" />
         <activity android:name=".FiltersActivity" />
@@ -34,7 +37,6 @@
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".PasswordActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"

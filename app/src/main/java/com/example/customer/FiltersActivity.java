@@ -51,6 +51,17 @@ public class FiltersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filters);
+        //
+        Button button=findViewById(R.id.btnStartNavigation);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText( FiltersActivity.this," i am here",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(FiltersActivity.this,RestaurantNavigationActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         //Initialization
         lowPrice = 0;

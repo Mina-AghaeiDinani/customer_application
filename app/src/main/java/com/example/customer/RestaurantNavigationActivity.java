@@ -85,7 +85,7 @@ public class RestaurantNavigationActivity extends AppCompatActivity implements O
                 int i;
                 double initiallng, intiallong, distance;
                 initiallng = myPositionMarker.getPosition().latitude;
-                intiallong = myPositionMarker.getPosition().latitude;
+                intiallong = myPositionMarker.getPosition().longitude;
                 for (i = 0; i < restaurantLocations.size(); i++) {
                     mMap.addMarker(new MarkerOptions().position(restaurantLocations.get(i).getLatLng()).title(restaurantLocations.get(i).getRestName()));
                     distance = CalculationByDistance(initiallng, intiallong, restaurantLocations.get(i).getLatLng().latitude, restaurantLocations.get(i).getLatLng().longitude);

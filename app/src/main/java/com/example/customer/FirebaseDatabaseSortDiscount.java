@@ -43,11 +43,12 @@ public class FirebaseDatabaseSortDiscount {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     keys.add(keyNode.getKey());
                     DailyOffer dailyOffer = keyNode.getValue(DailyOffer.class);
-                    sortdiscount();
+
                     DailyFoods.add(dailyOffer);
 
 
                 }
+                sortdiscount();
                 dataStatus.DataIsLoaded(DailyFoods, keys);
             }
 

@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,6 +68,7 @@ public class RestaurantNavigationActivity extends AppCompatActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_navigation);
+
         restaurantLocations = new ArrayList<>();
         places = new ArrayList<>();
         mReferenceLocations = FirebaseDatabase.getInstance().getReference().child("RestaurantsLocation");
@@ -79,14 +81,16 @@ public class RestaurantNavigationActivity extends AppCompatActivity implements O
                lat= (Double) dataSnapshot.child("lat").getValue();
                Lng= (Double) dataSnapshot.child("lng").getValue();
                Log.e("datasnapshot",Lng.toString());
-               mMap.addMarker(new MarkerOptions().position(new LatLng( lat,Lng )).title( "you are here " ));
+              MarkerOptions options=new MarkerOptions().position(new LatLng( lat,Lng )).title( "you are here " );
+              options.icon( BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE) );
+               mMap.addMarker(options);
                 Circle circle = mMap.addCircle(new CircleOptions()
                         .center(new LatLng(lat,Lng))
-                        .radius(10000)
-                        .strokeColor( Color.parseColor("#2271cce7"))
-                        .fillColor(Color.parseColor("#2271cce7")));
+                        .radius(1000)
+                        .strokeColor( Color.parseColor("#2281cce7"))
+                        .fillColor(Color.parseColor("#2281cce7")));
 
-                mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(lat, Lng), 16.0f));
+                mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(lat, Lng), 12.0f));
 
             }
 
@@ -130,8 +134,8 @@ public class RestaurantNavigationActivity extends AppCompatActivity implements O
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child(restId).setValue(distance1);
                     //..............
-                    //distances.add( new Distance(distance,restId) );
-                    //sortdistance();
+                    distances.add( new Distance(distance,restId) );
+                    sortdistance();
                 }
             }
 
@@ -236,15 +240,23 @@ public class RestaurantNavigationActivity extends AppCompatActivity implements O
     }
 
     public double CalculationByDistance(double initialLat, double initialLong, double finalLat, double finalLong) {
+        Location loc1 = new Location("");
+        loc1.setLatitude(initialLat);
+        loc1.setLongitude(initialLong);
 
-        double latDiff = finalLat - initialLat;
-        double longDiff = finalLong - initialLong;
-        double earthRadius = 6371; //In Km if you want the distance in km
+        Location loc2 = new Location("");
+        loc2.setLatitude(finalLat);
+        loc2.setLongitude(finalLong);
+        float distanceInKM = loc1.distanceTo(loc2)/1000;
+        return distanceInKM;
+       // double latDiff = finalLat - initialLat;
+       // double longDiff = finalLong - initialLong;
+       // double earthRadius = 6371; //In Km if you want the distance in km
 
-        double distance = 2 * earthRadius * Math.asin(Math.sqrt(Math.pow(Math.sin(latDiff / 2.0), 2) + Math.cos(initialLat) * Math.cos(finalLat) * Math.pow(Math.sin(longDiff / 2), 2)));
+       // double distance = 2 * earthRadius * Math.asin(Math.sqrt(Math.pow(Math.sin(latDiff / 2.0), 2) + Math.cos(initialLat) * Math.cos(finalLat) * Math.pow(Math.sin(longDiff / 2), 2)));
 
 
-        return distance;
+       // return distance;
     }
 
     public void sortdistance() {

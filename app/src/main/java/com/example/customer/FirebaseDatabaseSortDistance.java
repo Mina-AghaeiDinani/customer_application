@@ -41,10 +41,10 @@ public class FirebaseDatabaseSortDistance {
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()){
                     keys.add(keyNode.getKey());
                     Distance distance=keyNode.getValue(Distance.class);
-                    sortdistance();
+
                     orderdFoods.add(distance);
                 }
-
+                sortdistance();
                 dataStatus.DataIsLoaded(orderdFoods,keys);
             }
             @Override

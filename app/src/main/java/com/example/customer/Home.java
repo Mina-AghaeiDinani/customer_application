@@ -6,8 +6,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -147,7 +149,51 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        MenuInflater inflater=getMenuInflater();
+        inflater .inflate(R.menu.home, menu);
+
+        MenuItem searchitem=menu.findItem(R.id.action_search);
+        android.support.v7.widget.SearchView searchView=(android.support.v7.widget.SearchView)searchitem.getActionView();
+        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String s) {
+
+                mRecyclerView = (RecyclerView) findViewById(R.id.recycler_food);
+
+                new FirebaseDatabaseHelper().readFoods(new FirebaseDatabaseHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<DailyOffer> dailyOffers, List<String> keys) {
+                        findViewById(R.id.loading_foods_pb).setVisibility(View.GONE);
+                        new RecyclerView_Config().setConfig(mRecyclerView,Home.this,dailyOffers,keys);
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+
+                return true;
+            }
+
+
+        });
+
         return true;
     }
 
@@ -156,6 +202,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
